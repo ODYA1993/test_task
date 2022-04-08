@@ -1,0 +1,93 @@
+{% extends 'test_task/home.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'history' %}" method="get">
+            <div class="row">
+                <div class="col-3">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="q">
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-success my-2 my-sm-0 btn-block" type="submit">Поиск</button>
+                </div>
+            </div>
+
+
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Отправитель</th>
+                <th scope="col">Счет отправителя</th>
+                <th scope="col">Получатель</th>
+                <th scope="col">Счет получателя</th>
+                <th scope="col">Сумма перевода</th>
+                <th scope="col">Дата транзакции</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for history in page_obj.object_list %}
+                <tr>
+                    <th scope="row">{{ history.id }}</th>
+                    <td>{{ history.user }}</td>
+                        <td>
+                            <a href="{% url 'details' history.score_sender %}">
+                                {{ history.score_sender.account_number }}
+                            </a>
+                        </td>
+                    <td>{{ history.score_recipient.user }}</td>
+                    <td>{{ history.score_recipient.account_number }}</td>
+                    <td>{{ history.amount }}</td>
+                    <td>{{ history.created_at }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <!------------------------ Пагинация ------------------------>
+        {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if q != '' %}&{{q}}{% endif %}"
+                               tabindex="-1">Предыдущая</a>
+                        </li>
+                    {% endif %}
+
+
+                    {% for p in page_obj.paginator.page_range %}
+
+                        {% if page_obj.number == p %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="?page={{ p }}">{{ p }}
+                                    <span class="sr-only"></span> </a>
+                            </li>
+
+                        {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ p }}{% if q != '' %}&{{q}}{% endif %}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if q != '' %}&{{q}}{% endif %}">Следующая</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        {% endif %}
+        <!------------------------ end Пагинация ------------------------>
+        </form>
+    </div>
+{% endblock %}
+
+
+
+
+

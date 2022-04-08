@@ -1,0 +1,20 @@
+{% extends 'test_task/home.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+        <h2 class="text-center">Регистрация нового пользователя</h2>
+            <div class="col-3">
+                <form action="" method="POST" class="text-center">
+                    {% csrf_token %}
+                    {% for f in form %}
+                        <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+                        <div class="form-error">{{ f.errors }}</div>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">Регистрация</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

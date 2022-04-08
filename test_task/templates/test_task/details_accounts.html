@@ -1,0 +1,15 @@
+{% extends 'test_task/home.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for foo in score %}
+                <p><h6>Пользователь:{{ foo.user }}</h6>
+                <p><h6>Номер счета: {{ foo.account_number }}</h6>
+                <p><h6>Баланс: {{ foo.balance }}</h6>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}
