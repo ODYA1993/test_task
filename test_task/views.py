@@ -75,10 +75,9 @@ def save_transactions(user, score_sender, score_recipient, amount):
 
 def history(request):
     q = request.GET.get('q', '')
-    print('00000000000000', q)
     if q:
         history_filter = request.user.translationhistory_set.filter(
-            Q(score_sender__account_number__icontains=q) |              #  сделать тернарным выражение
+            Q(score_sender__account_number__icontains=q) |
             Q(amount=q)).order_by('-id')
     else:
         history_filter = request.user.translationhistory_set.all().order_by('-id')
